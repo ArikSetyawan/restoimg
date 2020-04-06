@@ -11,13 +11,13 @@ urllib.parse.uses_netloc.append('postgres')
 url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
 
 # for your config
-database = PostgresqlDatabase(
+database = {
     'engine': 'peewee.PostgresqlDatabase',
     'name': url.path[1:],
     'password': url.password,
     'host': url.hostname,
     'port': url.port,
-)
+}
 
 
 class BaseModel(Model):
