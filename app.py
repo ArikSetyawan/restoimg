@@ -36,7 +36,7 @@ class resource_image_upload(Resource):
 		try:
 			datas = request.json
 			gambar = datas['gambar']
-			ext = ['ext']
+			ext = datas['ext']
 			filename = 'restokuimage_'+''.join(random.choice(string.ascii_lowercase + string.digits + string.ascii_uppercase) for _ in range(10))+"."+ext
 
 			image = base64.b64decode(str(gambar))
