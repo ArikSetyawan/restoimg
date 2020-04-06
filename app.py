@@ -21,8 +21,8 @@ class image_file(BaseModel):
 	link = CharField(unique=True)
 
 def create_tables():
-	with database:
-		database.create_tables([image_file])
+	with db:
+		db.create_tables([image_file])
 
 
 app = Flask(__name__)
