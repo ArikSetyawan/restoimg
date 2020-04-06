@@ -41,7 +41,7 @@ class resource_image_upload(Resource):
 
 			image = base64.b64decode(str(gambar))
 			img = Image.open(io.BytesIO(image))
-			img.save(os.path.join(app.config['imgdir'],filename))
+			img.save("static/img/product/"+filename)
 
 
 			link = "http://setyawanarik.pythonanywhere.com/static/img/product/"+filename
