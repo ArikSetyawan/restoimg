@@ -52,7 +52,9 @@ class resource_image_upload(Resource):
 				)
 
 			return jsonify({"hasil":"created","link":link,"filename":"filename",'status':"success"})
-		except:
+		except KeyError:
+			return jsonify({"hasil":"Gagal","status":"gagal"})
+		except ValueError:
 			return jsonify({"hasil":"Gagal","status":"gagal"})
 
 api.add_resource(resource_image_upload, '/api/restokuimage/')
