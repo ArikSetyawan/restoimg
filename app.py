@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, reqparse
 from peewee import *
 import os, string, random, base64, io
 from PIL import Image
+import psycopg2
 
 # Models
 import urllib.parse
