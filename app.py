@@ -5,10 +5,10 @@ import os, string, random, base64, io
 from PIL import Image
 
 # Models
-import urlparse
+import urllib.parse
 
-urlparse.uses_netloc.append('postgres')
-url = urlparse.urlparse(os.environ['DATABASE_URL'])
+urllib.parse.uses_netloc.append('postgres')
+url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
 
 # for your config
 DATABASE = {
