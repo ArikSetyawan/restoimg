@@ -29,26 +29,31 @@ app.config['imgdir'] = 'static/img/product'
 
 class resource_image_upload(Resource):
 	def post(self):
-		parse = reqparse.RequestParser()
-		parse.add_argument('gambar',type=str,help='must str')
-		parse.add_argument('ext',type=str,help='must str')
-		args = parse.parse_args()
-		
-		filename = 'restokuimage_'+''.join(random.choice(string.ascii_lowercase + string.digits + string.ascii_uppercase) for _ in range(10))+"."+args['ext']
+		# parse = reqparse.RequestParser()
+		# parse.add_argument('gambar',type=str,help='must str')
+		# parse.add_argument('ext',type=str,help='must str')
+		# args = parse.parse_args()
+		try:
+			datas = request.json
+			gambar = datas['gambar']
+			ext = ['ext']
+			filename = 'restokuimage_'+''.join(random.choice(string.ascii_lowercase + string.digits + string.ascii_uppercase) for _ in range(10))+"."+ext
 
-		image = base64.b64decode(str(args['gambar']))
-		img = Image.open(io.BytesIO(image))
-		img.save(os.path.join(app.config['imgdir'],filename))
+			image = base64.b64decode(str(gambar))
+			img = Image.open(io.BytesIO(image))
+			img.save(os.path.join(app.config['imgdir'],filename))
 
 
-		link = "http://setyawanarik.pythonanywhere.com/static/img/product/"+filename
+			link = "http://setyawanarik.pythonanywhere.com/static/img/product/"+filename
 
-		image_file.create(
-				nama_file=filename,
-				link=link
-			)
+			image_file.create(
+					nama_file=filename,
+					link=link
+				)
 
-		return jsonify({"hasil":"created","link":link,"filename":"filename",'status':"success"})
+			return jsonify({"hasil":"created","link":link,"filename":"filename",'status':"success"})
+		except:
+			return jsonify({"hasil":"Gagal","status":"gagal"})
 
 api.add_resource(resource_image_upload, '/api/restokuimage/')
 
