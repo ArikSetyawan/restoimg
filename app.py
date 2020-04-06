@@ -45,7 +45,7 @@ class resource_image_upload(Resource):
 			img.save(os.path.join(app.config['imgdir'],filename))
 
 
-			link = "http://setyawanarik.pythonanywhere.com/static/img/product/"+filename
+			link = "https://restoimg.herokuapp.com/static/img/product/"+filename
 
 			image_file.create(
 					nama_file=filename,
