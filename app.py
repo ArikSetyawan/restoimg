@@ -25,7 +25,7 @@ app = Flask(__name__)
 api = Api(app)
 
 # config
-app.config['imgdir'] = '/static/img/product'
+app.config['imgdir'] = 'static/img/product'
 
 class resource_image_upload(Resource):
 	def post(self):
@@ -41,7 +41,8 @@ class resource_image_upload(Resource):
 
 			image = base64.b64decode(str(gambar))
 			img = Image.open(io.BytesIO(image))
-			img.save("static/img/product/"+filename)
+
+			img.save(filename)
 
 
 			link = "http://setyawanarik.pythonanywhere.com/static/img/product/"+filename
@@ -61,4 +62,4 @@ api.add_resource(resource_image_upload, '/api/restokuimage/')
 
 if __name__ == "__main__":
 	create_tables()
-	app.run(debug=True,port=5001)
+	app.run()
