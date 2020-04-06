@@ -3,21 +3,34 @@ from flask_restful import Api, Resource, reqparse
 from peewee import *
 import os, string, random, base64, io
 from PIL import Image
+import psycopg2
 
 # Models
 import urllib.parse
 
-urllib.parse.uses_netloc.append('postgres')
-url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
-
-# for your config
-database = {
-    'engine': 'peewee.PostgresqlDatabase',
-    'name': url.path[1:],
-    'password': url.password,
-    'host': url.hostname,
-    'port': url.port,
-}
+if 'HEROKU' in os.environ:
+    DEBUG = False
+    urllib.parse.uses_netloc.append('postgres')
+    url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
+    DATABASE = {
+        'engine': 'peewee.PostgresqlDatabase',
+        'name': url.path[1:],
+        'user': url.username,
+        'password': url.password,
+        'host': url.hostname,
+        'port': url.port,
+    }
+else:
+    DEBUG = True
+    DATABASE = {
+        'engine': 'peewee.PostgresqlDatabase',
+        'name': 'framingappdb',
+        'user': 'postgres',
+        'password': 'postgres',
+        'host': 'localhost',
+        'port': 5432 ,
+        'threadlocals': True
+    }
 
 
 class BaseModel(Model):
