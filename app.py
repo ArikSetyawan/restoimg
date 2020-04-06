@@ -39,6 +39,21 @@ api = Api(app)
 # config
 app.config['imgdir'] = 'static/img/product'
 
+class index(Resource):
+	def get(self):
+		datas = image_file.select()
+		data_image = []
+		if datas.exists():
+			for i in datas:
+				data = {}
+				data['id'] = i.id
+				data['nama_file'] = i.nama_file
+				data['link'] = i.link
+				data_image.append(data)
+			return jsonify({"hasil":data_image,"status":"success"})
+		else:
+			return jsonify({"hasil":data_image,"status":"gagal"})
+
 class resource_image_upload(Resource):
 	def post(self):
 		# parse = reqparse.RequestParser()
@@ -57,7 +72,7 @@ class resource_image_upload(Resource):
 			img.save(os.path.join(app.config['imgdir'],filename))
 
 
-			link = "https://restoimg.herokuapp.com/static/img/product/"+filename
+			link = "https://restoimg.herokuapp.com/static/img/product/{}".format(filename)
 
 			image_file.create(
 					nama_file=filename,
@@ -71,6 +86,7 @@ class resource_image_upload(Resource):
 			return jsonify({"hasil":"Gagal","status":"gagal"})
 
 api.add_resource(resource_image_upload, '/api/restokuimage/')
+api.add_resource(index,'/')
 
 if __name__ == "__main__":
 	create_tables()
