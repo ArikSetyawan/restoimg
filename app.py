@@ -5,8 +5,20 @@ import os, string, random, base64, io
 from PIL import Image
 
 # Models
-db = 'myresto_fileservice.db'
-database = SqliteDatabase(db)
+import urlparse
+
+urlparse.uses_netloc.append('postgres')
+url = urlparse.urlparse(os.environ['DATABASE_URL'])
+
+# for your config
+DATABASE = {
+    'engine': 'peewee.PostgresqlDatabase',
+    'name': url.path[1:],
+    'password': url.password,
+    'host': url.hostname,
+    'port': url.port,
+}
+
 class BaseModel(Model):
 	class Meta:
 		database = database
