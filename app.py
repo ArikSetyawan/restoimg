@@ -25,7 +25,7 @@ app = Flask(__name__)
 api = Api(app)
 
 # config
-app.config['imgdir'] = './static/img/product'
+app.config['imgdir'] = '/static/img/product'
 
 class resource_image_upload(Resource):
 	def post(self):
