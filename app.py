@@ -4,12 +4,12 @@ from peewee import *
 import os, string, random, base64, io
 from PIL import Image
 
+from playhouse.db_url import connect
 # Models
-import urllib.parse
+# db = 'myresto_fileservice.db'
+# database = SqliteDatabase(db)
 
-db_proxy = Proxy()
-
-
+db = connect(os.environ.get('DATABASE_URL'))
 
 class BaseModel(Model):
 	class Meta:
@@ -24,31 +24,12 @@ def create_tables():
 	with database:
 		database.create_tables([image_file])
 
-if 'HEROKU' in os.environ:
-    import psycopg2
-    urllib.parse.uses_netloc.append('postgres')
-    url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-    db = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
-    db_proxy.initialize(db)
-else:
-    db = SqliteDatabase('persons.db')
-    db_proxy.initialize(db)
 
 app = Flask(__name__)
 api = Api(app)
 
 # config
 app.config['imgdir'] = 'static/img/product'
-
-@app.before_request
-def before_request():
-    g.db = db_proxy
-    g.db.connect()
-
-@app.after_request
-def after_request(response):
-    g.db.close()
-    return response
 
 class index(Resource):
 	def get(self):
@@ -100,6 +81,5 @@ api.add_resource(resource_image_upload, '/api/restokuimage/')
 api.add_resource(index,'/')
 
 if __name__ == "__main__":
-	db_proxy.connect()
 	create_tables()
 	app.run()
