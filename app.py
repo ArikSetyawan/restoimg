@@ -3,7 +3,6 @@ from flask_restful import Api, Resource, reqparse
 from peewee import *
 import os, string, random, base64, io
 from PIL import Image
-import psycopg2
 
 # Models
 import urllib.parse
@@ -26,9 +25,9 @@ def create_tables():
 		database.create_tables([image_file])
 
 if 'HEROKU' in os.environ:
-    import urlparse, psycopg2
-    urlparse.uses_netloc.append('postgres')
-    url = urlparse.urlparse(os.environ["DATABASE_URL"])
+    import psycopg2
+    urllib.parse.uses_netloc.append('postgres')
+    url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
     db = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
     db_proxy.initialize(db)
 else:
