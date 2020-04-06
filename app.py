@@ -13,7 +13,7 @@ db = connect(os.environ.get('DATABASE_URL'))
 
 class BaseModel(Model):
 	class Meta:
-		database = database
+		database = db
 
 class image_file(BaseModel):
 	id = AutoField(primary_key=True)
